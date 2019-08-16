@@ -18,6 +18,17 @@ This is a rails 5 base project.
 
 ## Here we have the following tools installed:
 
+### Devise
+Repo: https://github.com/plataformatec/devise
+
+Devise is a flexible authentication solution for Rails based on Warden.
+
+You can customize all devise views running the following generator:
+
+```
+  rails generate devise:views
+```
+
 ### Rspec Rails
 Repo: https://github.com/rspec/rspec-rails
 
