@@ -55,3 +55,8 @@ How to execute it:
 ```
   bundle exec scss-lint
 ```
+
+### Test coverage
+Repo: https://github.com/colszowka/simplecov
+
+After running your tests take a look at the coverage folder: `coverage/index.html`
