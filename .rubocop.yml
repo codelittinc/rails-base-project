@@ -1,0 +1,29 @@
+require: rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.6
+  Exclude:
+    - Guardfile
+    - 'bin/*'
+    - Rakefile
+    - 'config/**/*'
+    - db/migrate/*
+    - config.ru
+    - db/*
+    - vendor/**/*
+    - 'node_modules/**/*'
+
+Style/Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 154
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - spec/**/*
+RSpec/ExampleLength:
+  Enabled: true
+  Exclude:
+    - spec/**/*
+Style/Lambda:
+  EnforcedStyle: literal
