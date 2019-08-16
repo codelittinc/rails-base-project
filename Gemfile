@@ -50,6 +50,7 @@ group :development, :test do
   gem 'faker', '~> 1.9', '>= 1.9.3'
   gem 'rubocop', require: false
   gem 'rubocop-rspec'
+  gem 'scss_lint', require: false
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

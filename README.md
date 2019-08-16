@@ -46,3 +46,12 @@ How to execute it:
 ```
   bundle exec rubocop
 ```
+
+### SCSS Lint
+  `scss-lint is a tool to help keep your SCSS files clean and readable by running it against a collection of configurable linter rules. 
+  It will enforce many of the guidelines outlined in the community [Sass Guidelines project](https://sass-guidelin.es/)  
+  To execute it:
+  
+```
+  bundle exec scss-lint
+```
