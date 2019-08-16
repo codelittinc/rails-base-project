@@ -1,6 +1,22 @@
 This is a rails 5 base project.
 
-Here we have the following tools installed:
+## Getting started
+
+1. Clone the project
+2. [Install docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04) and docker-compose
+3. Inside the project folder run `sh bin/dev`
+4. Inside the docker console run:
+```
+  bundle exec rails db:create
+  bundle exec rails db:migrate
+  bundle exec rails db:seed
+  yarn install
+
+  rails s -b `hostname -i`
+```
+5. Go to your browser and access `http://localhost:3000`
+
+## Here we have the following tools installed:
 
 ### Rspec Rails
 Repo: https://github.com/rspec/rspec-rails
