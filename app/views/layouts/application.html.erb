@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html>
+	<% if Rails.env.production? %>
+  	<!-- Global site tag (gtag.js) - Google Analytics -->
+  	<script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV['GOOGLE_UA'] %>"></script>
+  	<script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', "<%= ENV['GOOGLE_UA'] %>");
+    </script>
+	<% end %>
+
   <head>
     <title>RailsBaseProject</title>
     <%= csrf_meta_tags %>
