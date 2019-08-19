@@ -78,11 +78,6 @@ test:
 #
 # You can use this database configuration with:
 #
-#   production:
-#     url: <%= ENV['DATABASE_URL'] %>
-#
 production:
-  <<: *default
-  database: rails-base-project_production
-  username: rails-base-project
-  password: <%= ENV['RAILS-BASE-PROJECT_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
+

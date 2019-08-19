@@ -1,0 +1,152 @@
+version: 2.1
+orbs:
+  heroku: circleci/heroku@0.0.5
+
+workflows:
+  heroku_deploy:
+    jobs:
+      - build
+      - deploy_dev:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - develop
+
+      - deploy_qa:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - qa
+
+      - deploy_prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+
+jobs:
+  build:
+    working_directory: ~/circleci-base-project
+
+    # Primary container image where all commands run
+    docker:
+      - image: circleci/ruby:2.6.2-node-browsers-legacy
+        environment:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: root
+
+    # Service container image available at `host: localhost`
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: team_workflow_test
+
+    steps:
+      - checkout
+
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - rails-base-project-{{ checksum "Gemfile.lock" }}
+            - rails-base-project
+
+      # Bundle install dependencies
+      - run:
+          name: Install dependencies
+          command: |
+            gem install bundler -v 2.0.1
+            bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs 4 --retry 3
+            yarn
+      # Store bundle cache
+      - save_cache:
+          key: rails-base-project-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          name: Setup database.yml
+          command: cp config/database.ci.yml config/database.yml
+
+      - run:
+          name: Database Setup
+          command: |
+            bundle exec rails db:create
+            bundle exec rails db:migrate
+      # run tests!
+      - run:
+          name: run tests
+          command: bundle exec rspec
+
+      # run rubocop!
+      - run:
+          name: run rubocop
+          command: bundle exec rubocop
+
+      # collect reports
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+      - store_artifacts:
+          path: coverage
+
+  deploy_dev:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - run:
+          name: Setup heroku dev server
+          command: echo 'export HEROKU_APP_NAME="codelitt-rails-base-project"' >> $BASH_ENV
+      - run:
+          name: Deploy to heroku with --force
+          command: git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $CIRCLE_BRANCH:master
+      - run:
+          name: Recreate Heroku database
+          command: |
+            heroku restart --app codelitt-rails-base-project
+            heroku pg:reset DATABASE --confirm dev-rails-base-project-codelitt --app codelitt-rails-base-project
+      - run:
+          name: Run migrations
+          command: heroku run rails db:migrate --app codelitt-rails-base-project
+      - run:
+          name: Run seed
+          command: heroku run rails db:seed --app codelitt-rails-base-project
+
+  deploy_qa:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - run:
+          name: Setup heroku QA server
+          command: echo 'export HEROKU_APP_NAME="codelitt-rails-base-project"' >> $BASH_ENV
+      - run:
+          name: Deploy to heroku with --force
+          command: git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $CIRCLE_BRANCH:master
+      - run:
+          name: Run migrations
+          command: heroku run rails db:migrate --app codelitt-rails-base-project
+
+  deploy_prod:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - run:
+          name: Setup heroku prod server
+          command: echo 'export HEROKU_APP_NAME="codelitt-rails-base-project"' >> $BASH_ENV
+      - run:
+          name: Deploy to heroku with --force
+          command: git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $CIRCLE_BRANCH:master
+      - run:
+          name: Run migrations
+          command: heroku run rake db:migrate --app codelitt-rails-base-project
