@@ -1,5 +1,8 @@
 scss_files: "app/assets/stylesheets/**/*.scss"
 
+# Default severity of all linters
+severity: error
+
 linters:
   BangFormat:
     enabled: true

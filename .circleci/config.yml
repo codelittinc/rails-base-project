@@ -89,6 +89,11 @@ jobs:
           name: run rubocop
           command: bundle exec rubocop
 
+      # run scss-lint!
+      - run:
+          name: run scss-lint
+          command: bundle exec scss-lint
+
       # collect reports
       - store_test_results:
           path: /tmp/test-results
