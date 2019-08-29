@@ -39,7 +39,7 @@ linters:
     enabled: true
 
   DuplicateProperty:
-    enabled: false
+    enabled: true
 
   ElsePlacement:
     enabled: true
