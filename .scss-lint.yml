@@ -116,7 +116,7 @@ linters:
     enabled: false
 
   PropertySortOrder:
-    enabled: false
+    enabled: true
 
   PropertySpelling:
     enabled: true
