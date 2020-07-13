@@ -88,6 +88,8 @@ Rails.application.configure do
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
+  config.logger = GELF::Logger.new("logs.codelitt.dev", 12201, "WAN", { host: ENV['LOG_HOST'], environment: ENV['LOG_ENV'] })
+
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
