@@ -1,7 +1,8 @@
 require: rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
+  NewCops: enable
   Exclude:
     - Guardfile
     - 'bin/*'
@@ -15,15 +16,16 @@ AllCops:
 
 Style/Documentation:
   Enabled: false
-Metrics/LineLength:
-  Max: 154
+
 Metrics/BlockLength:
   Enabled: true
   Exclude:
     - spec/**/*
+
 RSpec/ExampleLength:
   Enabled: true
   Exclude:
     - spec/**/*
+
 Style/Lambda:
   EnforcedStyle: literal

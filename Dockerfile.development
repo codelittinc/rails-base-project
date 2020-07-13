@@ -15,7 +15,7 @@ EXPOSE 3000
 WORKDIR /share
 ADD Gemfile /share/Gemfile
 ADD Gemfile.lock /share/Gemfile.lock
-RUN bundle install --with development
+RUN bundle install
 
 ADD package.json /share/package.json
 RUN npm install
